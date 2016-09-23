@@ -1,0 +1,9 @@
+<resources>
+	<string name="app_name">Yum</string>
+	<string name="action_sort">Sort</string>
+	<string name="action_sort_best_match">Best Match</string>
+	<string name="action_sort_rating">Rating</string>
+	<string name="action_sort_review_count">Review Count</string>
+	<string name="action_sort_distance">Distance</string>
+	<string name="action_search">Search</string>
+</resources>
