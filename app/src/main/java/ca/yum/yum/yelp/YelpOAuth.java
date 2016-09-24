@@ -50,9 +50,19 @@ public class YelpOAuth {
 	private void storeAccessToken(Response response) throws IOException {
 		String accessTokenString = response.body().string();
 		accessToken = objectMapper.readValue(accessTokenString, AccessToken.class);
+		long expires = System.currentTimeMillis() + accessToken.getExpiresIn() * 1000;
+		accessToken.setExpiresAbsolute(expires);
+	}
+
+	void setAccessToken(AccessToken accessToken) {
+		this.accessToken = accessToken;
 	}
 
 	public AccessToken getAccessToken() {
 		return accessToken;
+	}
+
+	public boolean isValid() {
+		return accessToken != null && accessToken.getExpiresAbsolute() > System.currentTimeMillis();
 	}
 }

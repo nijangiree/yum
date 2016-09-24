@@ -14,6 +14,7 @@ public class AccessToken {
 	private String tokenType;
 	@JsonProperty("expires_in")
 	private int expiresIn;
+	private long expiresAbsolute;
 
 	public String getAccessToken() {
 		return accessToken;
@@ -37,5 +38,13 @@ public class AccessToken {
 
 	public void setExpiresIn(int expiresIn) {
 		this.expiresIn = expiresIn;
+	}
+
+	public long getExpiresAbsolute() {
+		return expiresAbsolute;
+	}
+
+	public void setExpiresAbsolute(long expiresAbsolute) {
+		this.expiresAbsolute = expiresAbsolute;
 	}
 }
