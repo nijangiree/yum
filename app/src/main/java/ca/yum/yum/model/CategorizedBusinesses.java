@@ -32,6 +32,7 @@ public class CategorizedBusinesses {
 		} else {
 			businesses = new ArrayList<>();
 			categoryToBusiness.put(category, businesses);
+			total++;
 		}
 		return businesses;
 	}
@@ -76,12 +77,17 @@ public class CategorizedBusinesses {
 			curIndex++;
 			int numBusinesses = categoryToBusiness.get(key).size();
 			if(index < curIndex + numBusinesses) {
-				int subIndex = index % curIndex;
+				int subIndex = index - curIndex;
 				return categoryToBusiness.get(key).get(subIndex);
 			}
 			curIndex += numBusinesses;
 		}
 		return null;
+	}
+
+	public void clear() {
+		categoryToBusiness.clear();
+		total = 0;
 	}
 
 }

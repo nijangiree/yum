@@ -24,7 +24,7 @@ public class YelpController {
 	YelpOAuth yelpOAuth;
 
 	public static class SearchOptions {
-		enum SortBy {
+		public enum SortBy {
 			SORT_BEST_MATCH("best_match"),
 			SORT_RATING("rating"),
 			SORT_REVIEW_COUNT("review_count"),
@@ -37,7 +37,6 @@ public class YelpController {
 
 		String searchTerm;
 		String location;
-		String country;
 		int limit;
 		SortBy sortBy = SortBy.SORT_BEST_MATCH;
 
@@ -51,11 +50,6 @@ public class YelpController {
 			return this;
 		}
 
-		public SearchOptions setCountry(String country) {
-			this.country = country;
-			return this;
-		}
-
 		public SearchOptions setSortBy(SortBy sortBy) {
 			this.sortBy = sortBy;
 			return this;
@@ -64,6 +58,19 @@ public class YelpController {
 		public SearchOptions setLimit(int limit) {
 			this.limit = limit;
 			return this;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj == null) return false;
+			if(obj instanceof SearchOptions) {
+				SearchOptions ops = (SearchOptions) obj;
+				return searchTerm.equals(ops.searchTerm)
+						&& location.equals(ops.location)
+						&& limit == ops.limit
+						&& sortBy == ops.sortBy;
+			}
+			return super.equals(obj);
 		}
 	}
 
@@ -119,7 +126,7 @@ public class YelpController {
 	private HttpUrl asSearchUrl(HttpUrl.Builder builder, SearchOptions searchOptions) {
 		builder.addPathSegments("businesses/search")
 				.addEncodedQueryParameter("term", searchOptions.searchTerm)
-				.addEncodedQueryParameter("location", searchOptions.location + "," + searchOptions.country)
+				.addEncodedQueryParameter("location", searchOptions.location)
 				.addEncodedQueryParameter("sort_by", searchOptions.sortBy.value)
 				.addQueryParameter("limit", String.valueOf(searchOptions.limit));
 		return builder.build();

@@ -47,6 +47,7 @@ public class CategorizedBusinessesTest {
 		assertThat(categorizedBusinesses.getCategory(7), is("tea"));
 
 		assertThat(categorizedBusinesses.getTotalItemsInCategory("arcade"), is(3));
+		assertThat(categorizedBusinesses.getTotal(), is(10));
 	}
 
 	private BusinessWithReviews generateBusinessWithReviews(String category, String businessId) {

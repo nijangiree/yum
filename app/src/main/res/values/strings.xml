@@ -6,4 +6,6 @@
 	<string name="action_sort_review_count">Review Count</string>
 	<string name="action_sort_distance">Distance</string>
 	<string name="action_search">Search</string>
+	<string name="no_reviews">No Reviews</string>
+	<string name="no_results">No Results</string>
 </resources>

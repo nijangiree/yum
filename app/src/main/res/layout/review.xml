@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical">
+
+	<ImageView
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		app:srcCompat="@drawable/ic_person_black_24dp"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:id="@+id/user_image"/>
+
+	<RatingBar
+		android:id="@+id/review_rating"
+		style="@style/Widget.AppCompat.RatingBar.Small"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
+		android:layout_marginTop="16dp"
+		android:numStars="5"
+		android:stepSize="0.5"
+		tools:rating="3.5"
+		/>
+
+	<TextView
+		tools:text="User Name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/user_name"
+		android:layout_marginLeft="8dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="16dp"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@id/user_image"
+		android:layout_toEndOf="@id/user_image"
+		android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+	<TextView
+		android:id="@+id/user_review"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/user_image"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="8dp"
+		android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+		tools:text="20+ visits: Food is exceptional and totally worth the wait. \nThe staff is great and the atmosphere is comfortable.\n\nTips: \nArrive by 6pm and you generally..."
+		/>
+</RelativeLayout>

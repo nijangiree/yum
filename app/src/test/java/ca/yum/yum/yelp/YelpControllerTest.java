@@ -45,12 +45,14 @@ public class YelpControllerTest {
 		YelpController controller = new YelpController(client, objectMapper, oAuth);
 		YelpController.SearchOptions searchOptions = new YelpController.SearchOptions();
 		searchOptions
-				.setCountry("Canada")
 				.setLocation("Toronto")
 				.setSearchTerm("Ethiopian")
 				.setLimit(10)
 				.setSortBy(YelpController.SearchOptions.SortBy.SORT_BEST_MATCH);
 		List<Business> businesses = controller.fetchBusinesses(searchOptions);
+		for(Business b : businesses) {
+			System.out.println(b.getId());
+		}
 		assertFalse(businesses.isEmpty());
 		assertTrue(businesses.size() <= 10);
 	}
@@ -60,7 +62,6 @@ public class YelpControllerTest {
 		YelpController controller = new YelpController(client, objectMapper, oAuth);
 		YelpController.SearchOptions searchOptions = new YelpController.SearchOptions();
 		searchOptions
-				.setCountry("Canada")
 				.setLocation("Toronto")
 				.setSearchTerm("asdfasdf")
 				.setLimit(10)

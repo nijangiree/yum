@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:layout_marginBottom="8dp"
+	android:layout_marginLeft="8dp"
+	android:layout_marginRight="8dp"
+	android:clickable="true"
+	app:cardCornerRadius="4dp">
+	<LinearLayout
+	  android:orientation="vertical"
+	  android:gravity="center"
+	  android:layout_gravity="center"
+	  android:layout_width="match_parent"
+	  android:layout_height="match_parent"
+	  android:padding="8dp">
+
+		<ImageView
+			android:id="@+id/business_image"
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			app:srcCompat="@drawable/ic_image_grey_24dp"
+			/>
+		<TextView
+			android:id="@+id/business_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			tools:text="Some Business Name"
+			android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+		<include
+			layout="@layout/review"
+			android:id="@+id/review"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			/>
+		<TextView
+			android:id="@+id/no_review"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:text="@string/no_reviews"
+			android:visibility="gone"
+			android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+	</LinearLayout>
+</android.support.v7.widget.CardView>
