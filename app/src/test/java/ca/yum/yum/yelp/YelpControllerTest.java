@@ -7,10 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import ca.yum.yum.model.AccessToken;
 import ca.yum.yum.model.Business;
+import ca.yum.yum.model.Review;
 import okhttp3.OkHttpClient;
 
 import static org.junit.Assert.*;
@@ -27,6 +30,7 @@ public class YelpControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		objectMapper = new ObjectMapper();
+		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH));
 		client = new OkHttpClient();
 		oAuth = new YelpOAuth(client, objectMapper);
 		oAuth.setAccessToken(new AccessToken());
@@ -63,6 +67,13 @@ public class YelpControllerTest {
 				.setSortBy(YelpController.SearchOptions.SortBy.SORT_BEST_MATCH);
 		List<Business> businesses = controller.fetchBusinesses(searchOptions);
 		assertTrue(businesses.isEmpty());
+	}
+
+	@Test
+	public void testFetchReviews() throws IOException {
+		YelpController controller = new YelpController(client, objectMapper, oAuth);
+		List<Review> reviews = controller.fetchReviews("nazareth-restaurant-toronto");
+		assertTrue(reviews.size() == 3); // the max reviews allowed by the api
 	}
 
 }
