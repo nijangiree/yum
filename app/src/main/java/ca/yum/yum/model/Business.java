@@ -3,6 +3,7 @@ package ca.yum.yum.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public class Business {
 	String imageUrl;
 	String price;
 	List<Category> categories;
+	List<String> photos = new ArrayList<>();
+	List<BusinessHours> hours = new ArrayList<>();
 
 	public String getId() {
 		return id;
@@ -92,5 +95,21 @@ public class Business {
 
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
+	}
+
+	public List<String> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(List<String> photos) {
+		this.photos = photos;
+	}
+
+	public List<BusinessHours> getHours() {
+		return hours;
+	}
+
+	public void setHours(List<BusinessHours> hours) {
+		this.hours = hours;
 	}
 }

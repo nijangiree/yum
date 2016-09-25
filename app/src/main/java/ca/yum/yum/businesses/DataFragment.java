@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import ca.yum.yum.YumApplication;
 import ca.yum.yum.model.BusinessWithReviews;
 import ca.yum.yum.model.CategorizedBusinesses;
 import ca.yum.yum.yelp.SearchOptions;
@@ -24,50 +24,21 @@ import okhttp3.OkHttpClient;
  * Created by nijan.
  */
 
-public class DataFragment extends Fragment implements SearchTask.SearchCompleteListener {
+public class DataFragment extends BaseDataFragment implements SearchTask.SearchCompleteListener {
 
-	public interface FetchDataListener {
+	public interface FetchSearchDataListener {
 		void onComplete();
 	}
 
-	ObjectMapper objectMapper;
-	OkHttpClient httpClient;
 	CategorizedBusinesses categorizedBusinesses;
-	FetchDataListener fetchDataListener;
-	YelpController yelpController;
+	FetchSearchDataListener fetchSearchDataListener;
 	SearchTask searchTask;
 	SearchOptions lastQuery;
 
 	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-	}
-
 	public void initialize(Context context) {
-		objectMapper = new ObjectMapper();
-		objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH));
-		Cache cache = new Cache(context.getCacheDir(), 20 * 1024 * 1024);
-		httpClient = new OkHttpClient.Builder().cache(cache).build();
+		super.initialize(context);
 		categorizedBusinesses = new CategorizedBusinesses();
-		YelpOAuth yelpOAuth = new YelpOAuth(httpClient, objectMapper);
-		yelpController = new YelpController(httpClient, objectMapper, yelpOAuth);
-	}
-
-	public ObjectMapper getObjectMapper() {
-		return objectMapper;
-	}
-
-	public void setObjectMapper(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
-
-	public OkHttpClient getHttpClient() {
-		return httpClient;
-	}
-
-	public void setHttpClient(OkHttpClient httpClient) {
-		this.httpClient = httpClient;
 	}
 
 	public CategorizedBusinesses getCategorizedBusinesses() {
@@ -78,46 +49,27 @@ public class DataFragment extends Fragment implements SearchTask.SearchCompleteL
 		this.categorizedBusinesses = categorizedBusinesses;
 	}
 
-	public YelpController getYelpController() {
-		return yelpController;
-	}
-
-	public void setYelpController(YelpController yelpController) {
-		this.yelpController = yelpController;
-	}
-
 	public SearchOptions getLastQuery() {
 		return lastQuery;
 	}
 
-	public FetchDataListener getFetchDataListener() {
-		return fetchDataListener;
+	public FetchSearchDataListener getFetchSearchDataListener() {
+		return fetchSearchDataListener;
 	}
 
-	public void setFetchDataListener(FetchDataListener fetchDataListener) {
-		this.fetchDataListener = fetchDataListener;
+	public void setFetchSearchDataListener(FetchSearchDataListener fetchSearchDataListener) {
+		this.fetchSearchDataListener = fetchSearchDataListener;
 	}
 
 	@Override
 	public void onSearchComplete(List<BusinessWithReviews> businessWithReviewsList) {
+		searchTask = null;
 		categorizedBusinesses.clear();
 		for(BusinessWithReviews businessWithReviews : businessWithReviewsList) {
 			categorizedBusinesses.add(businessWithReviews);
-			Log.e("DataFragment", "onSearchComplete: " + businessWithReviews.getBusiness().getId());
 		}
-		String s = "";
-		CategorizedBusinesses cb = categorizedBusinesses;
-		for(int i = 0; i < cb.getTotal(); i++) {
-			if(cb.isCategory(i)) {
-				s += "Cat: " + cb.getCategory(i);
-			} else {
-				s += "Bus: " + cb.getBusinessWithReviews(i).getBusiness().getId();
-			}
-			s += "\n";
-		}
-		Log.w("DataFragment", "preOnComplete: " + s);
-		if(fetchDataListener != null) {
-			fetchDataListener.onComplete();
+		if(fetchSearchDataListener != null) {
+			fetchSearchDataListener.onComplete();
 		}
 	}
 
@@ -129,5 +81,9 @@ public class DataFragment extends Fragment implements SearchTask.SearchCompleteL
 		}
 		searchTask = new SearchTask(yelpController, this);
 		searchTask.execute(searchOptions);
+	}
+
+	public boolean isFetching() {
+		return searchTask != null;
 	}
 }

@@ -19,9 +19,11 @@ public class BusinessesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private static final int TYPE_BUSINESS = 2;
 
 	CategorizedBusinesses categorizedBusinesses;
+	BusinessClickListener businessClickListener;
 
-	public BusinessesAdapter(CategorizedBusinesses categorizedBusinesses) {
+	public BusinessesAdapter(CategorizedBusinesses categorizedBusinesses, BusinessClickListener businessClickListener) {
 		this.categorizedBusinesses = categorizedBusinesses;
+		this.businessClickListener = businessClickListener;
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class BusinessesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			return categoryViewHolder;
 		} else {
 			View itemView = inflater.inflate(R.layout.business_item, parent, false);
-			BusinessRatingViewHolder businessHolder = new BusinessRatingViewHolder(itemView);
+			BusinessRatingViewHolder businessHolder = new BusinessRatingViewHolder(itemView, businessClickListener);
 			return businessHolder;
 		}
 	}

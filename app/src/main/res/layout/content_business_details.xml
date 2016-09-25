@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<LinearLayout
+		android:id="@+id/content_business_details"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingTop="@dimen/activity_vertical_margin"
+		tools:context="ca.yum.yum.BusinessDetailsActivity"
+		tools:showIn="@layout/activity_business_details">
+
+		<android.support.v7.widget.RecyclerView
+			android:id="@+id/business_images_recycler"
+			android:layout_width="match_parent"
+			android:layout_height="300dp"
+			android:layout_marginBottom="8dp"
+			/>
+
+		<TextView
+			android:id="@+id/business_name"
+			tools:text="Business Name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
+			android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+		<RatingBar
+			android:id="@+id/business_rating"
+			android:layout_gravity="center"
+			android:numStars="5"
+			android:stepSize="0.5"
+			tools:rating="3.5"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="8dp"
+			style="@style/Widget.AppCompat.RatingBar.Indicator"/>
+
+		<HorizontalScrollView
+			android:layout_gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<LinearLayout
+				android:id="@+id/business_hours"
+				android:orientation="horizontal"
+				android:layout_marginBottom="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		</HorizontalScrollView>
+
+		<HorizontalScrollView
+			android:layout_gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<LinearLayout
+				android:id="@+id/business_categories"
+				android:orientation="horizontal"
+				android:layout_gravity="center"
+				android:layout_marginBottom="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+
+			</LinearLayout>
+		</HorizontalScrollView>
+
+		<android.support.v7.widget.RecyclerView
+			android:id="@+id/business_reviews_recycler"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			/>
+
+		<ProgressBar
+			android:id="@+id/business_progressbar"
+			android:visibility="gone"
+			android:layout_gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:indeterminate="true"/>
+
+	</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

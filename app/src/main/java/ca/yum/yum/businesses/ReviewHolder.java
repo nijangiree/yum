@@ -2,6 +2,7 @@ package ca.yum.yum.businesses;
 
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -16,7 +17,7 @@ import ca.yum.yum.model.Review;
  * Created by nijan.
  */
 
-public class ReviewHolder {
+public class ReviewHolder extends RecyclerView.ViewHolder {
 
 	ImageView userImage;
 	RatingBar reviewRating;
@@ -26,6 +27,7 @@ public class ReviewHolder {
 	Drawable placeholder;
 
 	public ReviewHolder(View review) {
+		super(review);
 		this.review = review;
 		userImage = (ImageView) review.findViewById(R.id.user_image);
 		reviewRating = (RatingBar) review.findViewById(R.id.review_rating);
@@ -42,9 +44,5 @@ public class ReviewHolder {
 				.load(review.getUser().getImageUrl())
 				.placeholder(placeholder)
 				.into(userImage);
-	}
-
-	public View getReview() {
-		return review;
 	}
 }

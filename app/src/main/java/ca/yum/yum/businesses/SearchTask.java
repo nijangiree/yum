@@ -43,7 +43,6 @@ public class SearchTask extends AsyncTask<SearchOptions, Void, List<BusinessWith
 				BusinessWithReviews businessWithReviews = new BusinessWithReviews();
 				businessWithReviews.setBusiness(business);
 				businessWithReviews.setReviews(reviews);
-				Log.e("SearchTask", "gotBusiness: " + businessWithReviews.getBusiness().getId());
 				businessWithReviewsList.add(businessWithReviews);
 			}
 		} catch (IOException e) {

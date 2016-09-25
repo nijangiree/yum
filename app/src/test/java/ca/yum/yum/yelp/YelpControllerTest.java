@@ -15,6 +15,7 @@ import ca.yum.yum.model.Business;
 import ca.yum.yum.model.Review;
 import okhttp3.OkHttpClient;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**
@@ -74,6 +75,14 @@ public class YelpControllerTest {
 		YelpController controller = new YelpController(client, objectMapper, oAuth);
 		List<Review> reviews = controller.fetchReviews("nazareth-restaurant-toronto");
 		assertTrue(reviews.size() == 3); // the max reviews allowed by the api
+	}
+
+	@Test
+	public void testFetchBusinessDetails() throws Exception {
+		YelpController controller = new YelpController(client, objectMapper, oAuth);
+		Business details = controller.fetchBusinessWithDetails("nazareth-restaurant-toronto");
+		assertThat(details.getId(), is("nazareth-restaurant-toronto"));
+		assertFalse(details.getHours().get(0).getOpen().isEmpty());
 	}
 
 }

@@ -1,5 +1,6 @@
 package ca.yum.yum.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class BusinessWithReviews {
 	Business business;
-	List<Review> reviews;
+	List<Review> reviews = new ArrayList<>();
 
 	public Business getBusiness() {
 		return business;

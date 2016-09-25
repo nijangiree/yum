@@ -1,5 +1,6 @@
 package ca.yum.yum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -18,11 +19,15 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import ca.yum.yum.businesses.BusinessClickListener;
 import ca.yum.yum.businesses.BusinessesAdapter;
 import ca.yum.yum.businesses.DataFragment;
+import ca.yum.yum.model.BusinessWithReviews;
 import ca.yum.yum.yelp.SearchOptions;
 
-public class RestaurantsActivity extends AppCompatActivity implements DataFragment.FetchDataListener {
+public class RestaurantsActivity extends AppCompatActivity implements DataFragment.FetchSearchDataListener {
 
 	SearchView searchView;
 	DataFragment dataFragment;
@@ -42,13 +47,20 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		initializeDataFragment();
-		dataFragment.setFetchDataListener(this);
+		dataFragment.setFetchSearchDataListener(this);
 		progressBar = (ProgressBar) findViewById(R.id.businesses_loading_bar);
 		recyclerView = (RecyclerView) findViewById(R.id.businesses_recycler_view);
 		emptyView = findViewById(R.id.empty);
 		recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 		recyclerView.setHasFixedSize(true);
-		businessesAdapter = new BusinessesAdapter(dataFragment.getCategorizedBusinesses());
+		businessesAdapter = new BusinessesAdapter(dataFragment.getCategorizedBusinesses(), new BusinessClickListener() {
+			@Override
+			public void onClick(BusinessWithReviews businessWithReviews) {
+				Intent intent = new Intent(getApplicationContext(), BusinessDetailsActivity.class);
+				intent.putExtra(BusinessDetailsActivity.INTENT_BUSINESS_DETAILS, businessWithReviews.getBusiness().getId());
+				startActivity(intent);
+			}
+		});
 		recyclerView.setAdapter(businessesAdapter);
 		locationFab = (FloatingActionButton) findViewById(R.id.fab_search_location);
 		locationFab.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +73,10 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 
 		if(dataFragment.getLastQuery() == null) {
 			beginSearch("Ethiopian", "Toronto", SearchOptions.SortBy.SORT_BEST_MATCH);
+		} else {
+			if(dataFragment.isFetching()) {
+				showProgress(true);
+			}
 		}
 	}
 
@@ -99,15 +115,25 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		SearchOptions searchOptions = new SearchOptions();
 		searchOptions
 				.setSearchTerm(query)
-				.setLimit(3)
+				.setLimit(1)
 				.setLocation(location)
 				.setSortBy(order);
 		if(!searchOptions.equals(dataFragment.getLastQuery())) {
+			showProgress(true);
+			dataFragment.beginSearch(searchOptions);
+		}
+	}
+
+	private void showProgress(boolean visible) {
+		if(visible) {
 			locationFab.setVisibility(View.GONE);
-			progressBar.setVisibility(View.VISIBLE);
 			emptyView.setVisibility(View.GONE);
 			recyclerView.setVisibility(View.GONE);
-			dataFragment.beginSearch(searchOptions);
+			progressBar.setVisibility(View.VISIBLE);
+		} else {
+			locationFab.setVisibility(View.VISIBLE);
+			recyclerView.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.GONE);
 		}
 	}
 
@@ -134,18 +160,16 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		dataFragment.setFetchDataListener(null);
+		dataFragment.setFetchSearchDataListener(null);
 	}
 
 	@Override
 	public void onComplete() {
+		showProgress(false);
 		if(dataFragment.getCategorizedBusinesses().getTotal() == 0) {
 			emptyView.setVisibility(View.VISIBLE);
 		}
 		businessesAdapter.notifyDataSetChanged();
-		locationFab.setVisibility(View.VISIBLE);
-		progressBar.setVisibility(View.GONE);
-		recyclerView.setVisibility(View.VISIBLE);
 	}
 
 	private void setupLocationSearch() {

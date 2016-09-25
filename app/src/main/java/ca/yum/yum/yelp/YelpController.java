@@ -1,9 +1,12 @@
 package ca.yum.yum.yelp;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ca.yum.yum.model.AccessToken;
@@ -19,6 +22,7 @@ import okhttp3.Response;
  */
 
 public class YelpController {
+	private static final String TAG = YelpController.class.getName();
 	ObjectMapper objectMapper;
 	OkHttpClient client;
 	YelpOAuth yelpOAuth;
@@ -34,8 +38,13 @@ public class YelpController {
 		HttpUrl httpUrl = asSearchUrl(createBaseHttpUrl(), searchOptions);
 		Request request = builder.url(httpUrl).get().build();
 		Response response = client.newCall(request).execute();
-		BusinessSearchResult result = objectMapper.readValue(response.body().byteStream(), BusinessSearchResult.class);
-		return result.businesses;
+		if(response.isSuccessful()) {
+			BusinessSearchResult result = objectMapper.readValue(response.body().byteStream(), BusinessSearchResult.class);
+			return result.businesses;
+		} else {
+			Log.e(TAG, "Error fetching businesses: " + response.body().string());
+			return Collections.emptyList();
+		}
 	}
 
 	public List<Review> fetchReviews(String businessId) throws IOException {
@@ -43,8 +52,26 @@ public class YelpController {
 		HttpUrl httpUrl = asReviewUrl(createBaseHttpUrl(), businessId);
 		Request request = builder.url(httpUrl).get().build();
 		Response response = client.newCall(request).execute();
-		BusinessReviewsResult result = objectMapper.readValue(response.body().byteStream(), BusinessReviewsResult.class);
-		return result.getReviews();
+		if(response.isSuccessful()) {
+			BusinessReviewsResult result = objectMapper.readValue(response.body().byteStream(), BusinessReviewsResult.class);
+			return result.getReviews();
+		} else {
+			Log.e(TAG, "Error fetching reviews: " + response.body().string());
+			return Collections.emptyList();
+		}
+	}
+
+	public Business fetchBusinessWithDetails(String businessId) throws IOException {
+		Request.Builder builder = preFetch();
+		HttpUrl httpUrl = asBusinessDetailsUrl(createBaseHttpUrl(), businessId);
+		Request request = builder.url(httpUrl).get().build();
+		Response response = client.newCall(request).execute();
+		if(response.isSuccessful()) {
+			return objectMapper.readValue(response.body().byteStream(), Business.class);
+		} else {
+			Log.e(TAG, "Error fetching business details: " + response.body().string());
+			return null;
+		}
 	}
 
 	private Request.Builder preFetch() throws IOException {
@@ -56,6 +83,7 @@ public class YelpController {
 
 	private void confirmAuthenticate() throws IOException {
 		if(!yelpOAuth.isValid()) {
+			Log.w(TAG, "token invalid, authenticating");
 			yelpOAuth.authenticate();
 		}
 	}
@@ -85,6 +113,12 @@ public class YelpController {
 		builder.addPathSegment("businesses")
 				.addPathSegment(businessId)
 				.addPathSegment("reviews");
+		return builder.build();
+	}
+
+	private HttpUrl asBusinessDetailsUrl(HttpUrl.Builder builder, String businessId) {
+		builder.addPathSegment("businesses")
+				.addPathSegment(businessId);
 		return builder.build();
 	}
 
