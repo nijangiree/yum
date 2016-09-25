@@ -2,6 +2,6 @@
 <ImageView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_margin="8dp"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_width="@dimen/details_image_size"
+	android:layout_height="@dimen/details_image_size"
 	android:contentDescription="@string/business_picture"/>

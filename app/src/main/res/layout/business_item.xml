@@ -22,8 +22,8 @@
 
 		<ImageView
 			android:id="@+id/business_image"
-			android:layout_width="match_parent"
-			android:layout_height="@dimen/image_height"
+			android:layout_width="@dimen/image_size"
+			android:layout_height="@dimen/image_size"
 			app:srcCompat="@drawable/ic_image_grey_24dp"
 			/>
 		<TextView

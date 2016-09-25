@@ -21,17 +21,9 @@
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/business_images_recycler"
 			android:layout_width="match_parent"
-			android:layout_height="@dimen/image_height"
+			android:layout_height="@dimen/details_image_size"
 			android:layout_marginBottom="8dp"
 			/>
-
-		<TextView
-			android:id="@+id/business_name"
-			tools:text="Business Name"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="8dp"
-			android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
 		<RatingBar
 			android:id="@+id/business_rating"

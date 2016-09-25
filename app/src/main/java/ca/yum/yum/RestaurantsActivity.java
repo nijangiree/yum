@@ -136,7 +136,7 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		SearchOptions searchOptions = new SearchOptions();
 		searchOptions
 				.setSearchTerm(query)
-				.setLimit(4)
+				.setLimit(10)
 				.setLocation(location)
 				.setSortBy(order);
 		if(!searchOptions.equals(dataFragment.getLastQuery())) {

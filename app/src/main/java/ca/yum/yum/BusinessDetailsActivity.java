@@ -35,7 +35,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 
 	String businessId;
 	BusinessDetailsFragment businessDetailsFragment;
-	TextView businessName;
 	RatingBar businessRating;
 	ProgressBar loadingBar;
 	RecyclerView businessImagesRecycler;
@@ -50,7 +49,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		businessName = (TextView) findViewById(R.id.business_name);
 		businessRating = (RatingBar) findViewById(R.id.business_rating);
 		loadingBar = (ProgressBar) findViewById(R.id.business_progressbar);
 		businessImagesRecycler = (RecyclerView) findViewById(R.id.business_images_recycler);
@@ -106,7 +104,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 
 	private void showProgress(boolean visible) {
 		if(visible) {
-			businessName.setVisibility(View.GONE);
 			businessRating.setVisibility(View.GONE);
 			businessImagesRecycler.setVisibility(View.GONE);
 			businessReviewsRecycler.setVisibility(View.GONE);
@@ -114,7 +111,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 			businessCategoriesLayout.setVisibility(View.GONE);
 			loadingBar.setVisibility(View.VISIBLE);
 		} else {
-			businessName.setVisibility(View.GONE);
 			businessRating.setVisibility(View.VISIBLE);
 			businessImagesRecycler.setVisibility(View.VISIBLE);
 			businessReviewsRecycler.setVisibility(View.VISIBLE);
@@ -143,7 +139,6 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		}
 		showProgress(false);
 		setTitle(business.getName());
-		businessName.setText(business.getName());
 		businessRating.setRating(business.getRating());
 		setupImages(business);
 		setupReviews(businessWithReviews.getReviews());
