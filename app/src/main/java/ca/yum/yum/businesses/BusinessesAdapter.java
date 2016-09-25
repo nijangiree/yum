@@ -15,8 +15,8 @@ import ca.yum.yum.model.CategorizedBusinesses;
 
 public class BusinessesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private static final int TYPE_CATEGORY = 1;
-	private static final int TYPE_BUSINESS = 2;
+	public static final int TYPE_CATEGORY = 1;
+	public static final int TYPE_BUSINESS = 2;
 
 	CategorizedBusinesses categorizedBusinesses;
 	BusinessClickListener businessClickListener;

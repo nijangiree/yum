@@ -6,9 +6,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,8 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ca.yum.yum.businesses.BusinessClickListener;
 import ca.yum.yum.businesses.BusinessesAdapter;
@@ -46,12 +47,32 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		setContentView(R.layout.activity_restaurants);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+		float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+		float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+		Log.e("RestaurantsActivity", "dpHeight: " + dpHeight + " dpWidth: " + dpWidth);
+
+
 		initializeDataFragment();
 		dataFragment.setFetchSearchDataListener(this);
 		progressBar = (ProgressBar) findViewById(R.id.businesses_loading_bar);
 		recyclerView = (RecyclerView) findViewById(R.id.businesses_recycler_view);
 		emptyView = findViewById(R.id.empty);
-		recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+		final int spans = getResources().getInteger(R.integer.grid_size);
+		GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spans);
+		gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+			@Override
+			public int getSpanSize(int position) {
+				int type = businessesAdapter.getItemViewType(position);
+				if(type == BusinessesAdapter.TYPE_CATEGORY) {
+					return spans;
+				} else {
+					return 1;
+				}
+			}
+		});
+		recyclerView.setLayoutManager(gridLayoutManager);
 		recyclerView.setHasFixedSize(true);
 		businessesAdapter = new BusinessesAdapter(dataFragment.getCategorizedBusinesses(), new BusinessClickListener() {
 			@Override
@@ -115,7 +136,7 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		SearchOptions searchOptions = new SearchOptions();
 		searchOptions
 				.setSearchTerm(query)
-				.setLimit(1)
+				.setLimit(4)
 				.setLocation(location)
 				.setSortBy(order);
 		if(!searchOptions.equals(dataFragment.getLastQuery())) {

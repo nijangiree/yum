@@ -1,0 +1,4 @@
+<resources>
+	<dimen name="scalable_horizontal_margin">60dp</dimen>
+	<dimen name="scalable_vertical_margin">30dp</dimen>
+</resources>

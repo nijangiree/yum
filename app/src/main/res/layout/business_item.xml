@@ -23,7 +23,7 @@
 		<ImageView
 			android:id="@+id/business_image"
 			android:layout_width="match_parent"
-			android:layout_height="200dp"
+			android:layout_height="@dimen/image_height"
 			app:srcCompat="@drawable/ic_image_grey_24dp"
 			/>
 		<TextView
