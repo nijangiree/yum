@@ -2,7 +2,6 @@ package ca.yum.yum.yelp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,12 +42,12 @@ public class YelpControllerTest {
 	@Test
 	public void testFetchBusinesses() throws IOException {
 		YelpController controller = new YelpController(client, objectMapper, oAuth);
-		YelpController.SearchOptions searchOptions = new YelpController.SearchOptions();
+		SearchOptions searchOptions = new SearchOptions();
 		searchOptions
 				.setLocation("Toronto")
 				.setSearchTerm("Ethiopian")
 				.setLimit(10)
-				.setSortBy(YelpController.SearchOptions.SortBy.SORT_BEST_MATCH);
+				.setSortBy(SearchOptions.SortBy.SORT_BEST_MATCH);
 		List<Business> businesses = controller.fetchBusinesses(searchOptions);
 		for(Business b : businesses) {
 			System.out.println(b.getId());
@@ -60,12 +59,12 @@ public class YelpControllerTest {
 	@Test
 	public void testFetchBusinessesEmpty() throws IOException {
 		YelpController controller = new YelpController(client, objectMapper, oAuth);
-		YelpController.SearchOptions searchOptions = new YelpController.SearchOptions();
+		SearchOptions searchOptions = new SearchOptions();
 		searchOptions
 				.setLocation("Toronto")
 				.setSearchTerm("asdfasdf")
 				.setLimit(10)
-				.setSortBy(YelpController.SearchOptions.SortBy.SORT_BEST_MATCH);
+				.setSortBy(SearchOptions.SortBy.SORT_BEST_MATCH);
 		List<Business> businesses = controller.fetchBusinesses(searchOptions);
 		assertTrue(businesses.isEmpty());
 	}

@@ -8,4 +8,6 @@
 	<string name="action_search">Search</string>
 	<string name="no_reviews">No Reviews</string>
 	<string name="no_results">No Results</string>
+	<string name="search_location">Search Location</string>
+	<string name="error_search_location_empty">Enter a location</string>
 </resources>

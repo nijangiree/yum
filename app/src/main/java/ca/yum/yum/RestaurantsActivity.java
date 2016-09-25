@@ -2,25 +2,25 @@ package ca.yum.yum;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import ca.yum.yum.businesses.BusinessesAdapter;
 import ca.yum.yum.businesses.DataFragment;
-import ca.yum.yum.model.CategorizedBusinesses;
-import ca.yum.yum.yelp.YelpController;
+import ca.yum.yum.yelp.SearchOptions;
 
 public class RestaurantsActivity extends AppCompatActivity implements DataFragment.FetchDataListener {
 
@@ -30,6 +30,10 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 	BusinessesAdapter businessesAdapter;
 	ProgressBar progressBar;
 	View emptyView;
+	View searchLocationView;
+	ImageButton locationSearchButton;
+	EditText locationEditText;
+	FloatingActionButton locationFab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +50,17 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		recyclerView.setHasFixedSize(true);
 		businessesAdapter = new BusinessesAdapter(dataFragment.getCategorizedBusinesses());
 		recyclerView.setAdapter(businessesAdapter);
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_search_location);
-		fab.setOnClickListener(new View.OnClickListener() {
+		locationFab = (FloatingActionButton) findViewById(R.id.fab_search_location);
+		locationFab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
+				showSearchLocation(true);
 			}
 		});
+		setupLocationSearch();
 
 		if(dataFragment.getLastQuery() == null) {
-			beginSearch("Ethiopian", "Toronto");
+			beginSearch("Ethiopian", "Toronto", SearchOptions.SortBy.SORT_BEST_MATCH);
 		}
 	}
 
@@ -67,7 +71,6 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 			dataFragment = new DataFragment();
 			dataFragment.initialize(this);
 			fm.beginTransaction().add(dataFragment, "data").commit();
-			//todo add controller here
 		}
 	}
 
@@ -79,7 +82,7 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				beginSearch(query, "Toronto");
+				beginSearch(query, "Toronto", SearchOptions.SortBy.SORT_BEST_MATCH);
 				searchItem.collapseActionView();
 				return true;
 			}
@@ -92,17 +95,18 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		return true;
 	}
 
-	private void beginSearch(String query, String location) {
-		progressBar.setVisibility(View.VISIBLE);
-		emptyView.setVisibility(View.GONE);
-		recyclerView.setVisibility(View.GONE);
-		YelpController.SearchOptions searchOptions = new YelpController.SearchOptions();
+	private void beginSearch(String query, String location, SearchOptions.SortBy order) {
+		SearchOptions searchOptions = new SearchOptions();
 		searchOptions
 				.setSearchTerm(query)
 				.setLimit(3)
 				.setLocation(location)
-				.setSortBy(YelpController.SearchOptions.SortBy.SORT_BEST_MATCH);
+				.setSortBy(order);
 		if(!searchOptions.equals(dataFragment.getLastQuery())) {
+			locationFab.setVisibility(View.GONE);
+			progressBar.setVisibility(View.VISIBLE);
+			emptyView.setVisibility(View.GONE);
+			recyclerView.setVisibility(View.GONE);
 			dataFragment.beginSearch(searchOptions);
 		}
 	}
@@ -110,8 +114,19 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.action_sort) {
-			return true;
+		switch (id) {
+			case R.id.action_sort_best_match:
+				beginSort(SearchOptions.SortBy.SORT_BEST_MATCH);
+				return true;
+			case R.id.action_sort_distance:
+				beginSort(SearchOptions.SortBy.SORT_DISTANCE);
+				return true;
+			case R.id.action_sort_rating:
+				beginSort(SearchOptions.SortBy.SORT_RATING);
+				return true;
+			case R.id.action_sort_review_count:
+				beginSort(SearchOptions.SortBy.SORT_REVIEW_COUNT);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -128,7 +143,59 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 			emptyView.setVisibility(View.VISIBLE);
 		}
 		businessesAdapter.notifyDataSetChanged();
+		locationFab.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.GONE);
 		recyclerView.setVisibility(View.VISIBLE);
+	}
+
+	private void setupLocationSearch() {
+		searchLocationView = findViewById(R.id.search_location);
+		locationSearchButton = (ImageButton) findViewById(R.id.search_location_button);
+		locationEditText = (EditText) findViewById(R.id.search_location_entry);
+		locationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN) {
+					beginLocationSearch();
+					return true;
+				}
+				return false;
+			}
+		});
+		locationSearchButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				beginLocationSearch();
+			}
+		});
+	}
+
+	private void beginLocationSearch() {
+		String location = locationEditText.getText().toString();
+		if(location.isEmpty()) {
+			locationEditText.setError(getString(R.string.error_search_location_empty));
+			locationEditText.requestFocus();
+		} else {
+			showSearchLocation(false);
+			beginSearch("", location, SearchOptions.SortBy.SORT_BEST_MATCH);
+		}
+	}
+
+	private void showSearchLocation(boolean visible) {
+		if(visible) {
+			locationFab.setVisibility(View.GONE);
+			searchLocationView.setVisibility(View.VISIBLE);
+		} else {
+			locationFab.setVisibility(View.VISIBLE);
+			searchLocationView.setVisibility(View.GONE);
+		}
+	}
+
+	private void beginSort(SearchOptions.SortBy sortBy) {
+		if(dataFragment.getLastQuery().getSortBy() != sortBy) {
+			beginSearch(dataFragment.getLastQuery().getSearchTerm(),
+					dataFragment.getLastQuery().getLocation(),
+					sortBy);
+		}
 	}
 }

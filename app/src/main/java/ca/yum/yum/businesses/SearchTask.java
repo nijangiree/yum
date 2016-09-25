@@ -10,15 +10,15 @@ import java.util.List;
 
 import ca.yum.yum.model.Business;
 import ca.yum.yum.model.BusinessWithReviews;
-import ca.yum.yum.model.CategorizedBusinesses;
 import ca.yum.yum.model.Review;
+import ca.yum.yum.yelp.SearchOptions;
 import ca.yum.yum.yelp.YelpController;
 
 /**
  * Created by nijan.
  */
 
-public class SearchTask extends AsyncTask<YelpController.SearchOptions, Void, List<BusinessWithReviews>> {
+public class SearchTask extends AsyncTask<SearchOptions, Void, List<BusinessWithReviews>> {
 
 	public interface SearchCompleteListener {
 		void onSearchComplete(List<BusinessWithReviews> businessWithReviewsList);
@@ -32,9 +32,9 @@ public class SearchTask extends AsyncTask<YelpController.SearchOptions, Void, Li
 	}
 
 	@Override
-	protected List<BusinessWithReviews> doInBackground(YelpController.SearchOptions... params) {
+	protected List<BusinessWithReviews> doInBackground(SearchOptions... params) {
 		List<BusinessWithReviews> businessWithReviewsList = new ArrayList<>();
-		YelpController.SearchOptions searchOptions = params[0];
+		SearchOptions searchOptions = params[0];
 		try {
 			List<Business> businesses = yelpController.fetchBusinesses(searchOptions);
 			for(Business business : businesses) {

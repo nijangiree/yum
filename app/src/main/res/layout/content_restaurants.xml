@@ -32,4 +32,12 @@
 		android:visibility="gone"
 		tools:visibility="visible"
 		android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+	<include
+		android:id="@+id/search_location"
+		android:visibility="gone"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		layout="@layout/search_location"/>
+
 </FrameLayout>

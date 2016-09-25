@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import ca.yum.yum.model.BusinessWithReviews;
 import ca.yum.yum.model.CategorizedBusinesses;
+import ca.yum.yum.yelp.SearchOptions;
 import ca.yum.yum.yelp.YelpController;
 import ca.yum.yum.yelp.YelpOAuth;
 import okhttp3.Cache;
@@ -35,7 +36,7 @@ public class DataFragment extends Fragment implements SearchTask.SearchCompleteL
 	FetchDataListener fetchDataListener;
 	YelpController yelpController;
 	SearchTask searchTask;
-	YelpController.SearchOptions lastQuery;
+	SearchOptions lastQuery;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class DataFragment extends Fragment implements SearchTask.SearchCompleteL
 		this.yelpController = yelpController;
 	}
 
-	public YelpController.SearchOptions getLastQuery() {
+	public SearchOptions getLastQuery() {
 		return lastQuery;
 	}
 
@@ -120,7 +121,7 @@ public class DataFragment extends Fragment implements SearchTask.SearchCompleteL
 		}
 	}
 
-	public void beginSearch(YelpController.SearchOptions searchOptions) {
+	public void beginSearch(SearchOptions searchOptions) {
 		lastQuery = searchOptions;
 
 		if(searchTask != null) {
