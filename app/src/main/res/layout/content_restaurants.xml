@@ -11,7 +11,7 @@
 	android:layout_marginTop="@dimen/scalable_vertical_margin"
 	android:layout_marginBottom="@dimen/scalable_vertical_margin"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context="ca.yum.yum.RestaurantsActivity"
+	tools:context="ca.yum.yum.SearchBusinessActivity"
 	tools:showIn="@layout/activity_restaurants">
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/businesses_recycler_view"

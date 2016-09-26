@@ -22,7 +22,8 @@
 	<string name="am">AM</string>
 	<string name="pm">PM</string>
 	<string name="hour_am_pm">%1$s:%2$s%3$s</string>
-	<string name="error_fetching">Error retrieving content</string>
 	<string name="retry">Retry</string>
 	<string name="business_picture">Business Picture</string>
+	<string name="error_fetching">Error retrieving content</string>
+	<string name="error_geo_location">Can not view location</string>
 </resources>

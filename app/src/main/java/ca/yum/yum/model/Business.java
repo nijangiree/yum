@@ -24,6 +24,7 @@ public class Business {
 	private List<Category> categories;
 	private List<String> photos = new ArrayList<>();
 	private List<BusinessHours> hours = new ArrayList<>();
+	private Coordinates coordinates;
 
 	public String getId() {
 		return id;
@@ -111,5 +112,13 @@ public class Business {
 
 	public void setHours(List<BusinessHours> hours) {
 		this.hours = hours;
+	}
+
+	public Coordinates getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
 	}
 }

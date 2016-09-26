@@ -1,19 +1,24 @@
 package ca.yum.yum;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +30,7 @@ import ca.yum.yum.model.Business;
 import ca.yum.yum.model.BusinessHours;
 import ca.yum.yum.model.BusinessWithReviews;
 import ca.yum.yum.model.Category;
+import ca.yum.yum.model.Coordinates;
 import ca.yum.yum.model.Hours;
 import ca.yum.yum.model.Review;
 
@@ -41,6 +47,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 	RecyclerView businessReviewsRecycler;
 	LinearLayout businessHoursLayout;
 	LinearLayout businessCategoriesLayout;
+	FloatingActionButton goLocationFab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		businessReviewsRecycler = (RecyclerView) findViewById(R.id.business_reviews_recycler);
 		businessHoursLayout = (LinearLayout) findViewById(R.id.business_hours);
 		businessCategoriesLayout = (LinearLayout) findViewById(R.id.business_categories);
+		goLocationFab = (FloatingActionButton) findViewById(R.id.fab_open_location);
 		businessImagesRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 		businessReviewsRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 		setTitle("");
@@ -89,7 +97,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		businessDetailsFragment.setFetchBusinessDetailsListener(null);
 	}
 
-	public void beginFetchingDetails(boolean force) {
+	private void beginFetchingDetails(boolean force) {
 		if(!force && businessDetailsFragment.getBusinessWithReviews() != null
 				&& businessDetailsFragment
 				.getBusinessWithReviews()
@@ -102,6 +110,19 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		businessDetailsFragment.beginFetchingBusinessDetails(businessId);
 	}
 
+	private void openLocation(Coordinates coordinates, String title) {
+		try {
+			Uri uri = Uri.parse("geo:0,0?q="
+					+ coordinates.getLatitude() + ","
+					+ coordinates.getLongitude()
+					+ "(" + title + ")");
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			startActivity(intent);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(this, R.string.error_geo_location, Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	private void showProgress(boolean visible) {
 		if(visible) {
 			businessRating.setVisibility(View.GONE);
@@ -109,6 +130,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 			businessReviewsRecycler.setVisibility(View.GONE);
 			businessHoursLayout.setVisibility(View.GONE);
 			businessCategoriesLayout.setVisibility(View.GONE);
+			goLocationFab.setVisibility(View.GONE);
 			loadingBar.setVisibility(View.VISIBLE);
 		} else {
 			businessRating.setVisibility(View.VISIBLE);
@@ -125,6 +147,7 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		Business business = businessWithReviews.getBusiness();
 		if(business == null) {
 			loadingBar.setVisibility(View.GONE);
+			goLocationFab.setVisibility(View.GONE);
 			Snackbar.make(businessImagesRecycler,
 					getString(R.string.error_fetching),
 					Snackbar.LENGTH_INDEFINITE)
@@ -144,6 +167,17 @@ public class BusinessDetailsActivity extends AppCompatActivity implements Busine
 		setupReviews(businessWithReviews.getReviews());
 		setupHours(business.getHours());
 		setupCategories(business.getCategories());
+		final Coordinates coordinates = business.getCoordinates();
+		final String title = business.getName();
+		if(coordinates != null) {
+			goLocationFab.setVisibility(View.VISIBLE);
+			goLocationFab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					openLocation(coordinates, title);
+				}
+			});
+		}
 	}
 
 	private void setupImages(Business business) {

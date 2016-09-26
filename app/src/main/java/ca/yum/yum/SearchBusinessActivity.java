@@ -25,7 +25,7 @@ import ca.yum.yum.businesses.DataFragment;
 import ca.yum.yum.model.BusinessWithReviews;
 import ca.yum.yum.yelp.SearchOptions;
 
-public class RestaurantsActivity extends AppCompatActivity implements DataFragment.FetchSearchDataListener {
+public class SearchBusinessActivity extends AppCompatActivity implements DataFragment.FetchSearchDataListener {
 
 	SearchView searchView;
 	DataFragment dataFragment;
