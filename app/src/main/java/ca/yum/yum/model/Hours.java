@@ -18,11 +18,11 @@ public class Hours {
 		}
 	};
 
-	int day;
-	String start;
-	String end;
+	private int day;
+	private String start;
+	private String end;
 	@JsonProperty("is_overnight")
-	boolean isOverNight;
+	private boolean isOverNight;
 
 	public int getDay() {
 		return day;

@@ -5,8 +5,8 @@ package ca.yum.yum.model;
  */
 
 public class Category {
-	String title;
-	String alias;
+	private String title;
+	private String alias;
 
 	public String getTitle() {
 		return title;

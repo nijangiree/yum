@@ -24,8 +24,8 @@ public class SearchTask extends AsyncTask<SearchOptions, Void, List<BusinessWith
 		void onSearchComplete(List<BusinessWithReviews> businessWithReviewsList);
 	}
 
-	WeakReference<SearchCompleteListener> searchCompleteListener;
-	YelpController yelpController;
+	private WeakReference<SearchCompleteListener> searchCompleteListener;
+	private YelpController yelpController;
 	public SearchTask(YelpController yelpController, SearchCompleteListener searchCompleteListener) {
 		this.yelpController = yelpController;
 		this.searchCompleteListener = new WeakReference<>(searchCompleteListener);

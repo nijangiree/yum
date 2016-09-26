@@ -2,5 +2,5 @@
 	<dimen name="activity_horizontal_margin">64dp</dimen>
 	<dimen name="scalable_horizontal_margin">100dp</dimen>
 	<dimen name="scalable_vertical_margin">40dp</dimen>
-	<dimen name="details_image_size">500dp</dimen>
+	<dimen name="details_image_size">400dp</dimen>
 </resources>

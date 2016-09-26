@@ -17,7 +17,7 @@ import ca.yum.yum.model.Review;
 
 public class BusinessReviewsAdapter extends RecyclerView.Adapter<ReviewHolder> {
 
-	List<Review> reviews;
+	private List<Review> reviews;
 
 	public BusinessReviewsAdapter(List<Review> reviews) {
 		this.reviews = reviews;

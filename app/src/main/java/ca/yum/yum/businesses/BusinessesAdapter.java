@@ -18,8 +18,8 @@ public class BusinessesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	public static final int TYPE_CATEGORY = 1;
 	public static final int TYPE_BUSINESS = 2;
 
-	CategorizedBusinesses categorizedBusinesses;
-	BusinessClickListener businessClickListener;
+	private CategorizedBusinesses categorizedBusinesses;
+	private BusinessClickListener businessClickListener;
 
 	public BusinessesAdapter(CategorizedBusinesses categorizedBusinesses, BusinessClickListener businessClickListener) {
 		this.categorizedBusinesses = categorizedBusinesses;

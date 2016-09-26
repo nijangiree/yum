@@ -34,11 +34,13 @@ public class BusinessImagesAdapter extends RecyclerView.Adapter<BusinessImagesAd
 			Glide.with(itemView.getContext())
 					.load(url)
 					.placeholder(placeholder)
+					.skipMemoryCache(true)
+					.centerCrop()
 					.into(imageView);
 		}
 	}
 
-	List<String> businessImages;
+	private List<String> businessImages;
 
 	public BusinessImagesAdapter(List<String> businessImages) {
 		this.businessImages = businessImages;

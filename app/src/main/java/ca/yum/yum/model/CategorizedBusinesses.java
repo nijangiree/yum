@@ -11,15 +11,15 @@ import java.util.TreeMap;
  */
 
 public class CategorizedBusinesses {
-	Map<String, List<BusinessWithReviews>> categoryToBusiness = new TreeMap<>();
-	int total = 0;
+	private Map<String, List<BusinessWithReviews>> categoryToBusiness = new TreeMap<>();
+	private int total = 0;
 
 	public int getTotal() {
 		return total;
 	}
 
 	public void add(BusinessWithReviews business) {
-		String category = business.business.getCategories().get(0).getTitle();
+		String category = business.getBusiness().getCategories().get(0).getTitle();
 		List<BusinessWithReviews> businesses = getOrPut(category);
 		businesses.add(business);
 		total++;

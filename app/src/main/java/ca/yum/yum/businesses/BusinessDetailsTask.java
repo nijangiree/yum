@@ -22,8 +22,8 @@ public class BusinessDetailsTask extends AsyncTask<String, Void, BusinessWithRev
 		void onComplete(BusinessWithReviews businessWithReviews);
 	}
 
-	WeakReference<BusinessDetailsCompleteListener> listener;
-	YelpController yelpController;
+	private WeakReference<BusinessDetailsCompleteListener> listener;
+	private YelpController yelpController;
 	public BusinessDetailsTask(YelpController yelpController, BusinessDetailsCompleteListener listener) {
 		this.yelpController = yelpController;
 		this.listener = new WeakReference<>(listener);

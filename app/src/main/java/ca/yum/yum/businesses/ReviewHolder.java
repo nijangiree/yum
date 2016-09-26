@@ -19,12 +19,12 @@ import ca.yum.yum.model.Review;
 
 public class ReviewHolder extends RecyclerView.ViewHolder {
 
-	ImageView userImage;
-	RatingBar reviewRating;
-	TextView userName;
-	TextView userReview;
-	View review;
-	Drawable placeholder;
+	private ImageView userImage;
+	private RatingBar reviewRating;
+	private TextView userName;
+	private TextView userReview;
+	private View review;
+	private Drawable placeholder;
 
 	public ReviewHolder(View review) {
 		super(review);
@@ -43,6 +43,8 @@ public class ReviewHolder extends RecyclerView.ViewHolder {
 		Glide.with(this.review.getContext())
 				.load(review.getUser().getImageUrl())
 				.placeholder(placeholder)
+				.fitCenter()
+				.skipMemoryCache(true)
 				.into(userImage);
 	}
 }

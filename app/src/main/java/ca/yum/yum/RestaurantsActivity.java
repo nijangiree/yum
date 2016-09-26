@@ -6,12 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,12 +45,6 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-		float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-		float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-		Log.e("RestaurantsActivity", "dpHeight: " + dpHeight + " dpWidth: " + dpWidth);
-
-
 		initializeDataFragment();
 		dataFragment.setFetchSearchDataListener(this);
 		progressBar = (ProgressBar) findViewById(R.id.businesses_loading_bar);
@@ -79,6 +70,7 @@ public class RestaurantsActivity extends AppCompatActivity implements DataFragme
 			public void onClick(BusinessWithReviews businessWithReviews) {
 				Intent intent = new Intent(getApplicationContext(), BusinessDetailsActivity.class);
 				intent.putExtra(BusinessDetailsActivity.INTENT_BUSINESS_DETAILS, businessWithReviews.getBusiness().getId());
+				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
 			}
 		});

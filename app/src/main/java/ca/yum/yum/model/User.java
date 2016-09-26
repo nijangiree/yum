@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 public class User {
-	String name;
+	private String name;
 	@JsonProperty("image_url")
-	String imageUrl;
+	private String imageUrl;
 
 	public String getName() {
 		return name;

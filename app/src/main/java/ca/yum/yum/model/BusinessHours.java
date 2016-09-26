@@ -12,10 +12,10 @@ import java.util.List;
 public class BusinessHours {
 
 	@JsonProperty("is_open_now")
-	boolean isOpenNow;
+	private boolean isOpenNow;
 	@JsonProperty("hours_type")
-	String hoursType;
-	List<Hours> open = new ArrayList<>();
+	private String hoursType;
+	private List<Hours> open = new ArrayList<>();
 
 	public boolean isOpenNow() {
 		return isOpenNow;

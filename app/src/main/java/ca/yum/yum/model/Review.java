@@ -9,12 +9,12 @@ import java.util.Date;
  */
 
 public class Review {
-	String url;
-	String text;
-	User user;
-	int rating;
+	private String url;
+	private String text;
+	private User user;
+	private int rating;
 	@JsonProperty("time_created")
-	Date timeCreated;
+	private Date timeCreated;
 
 	public String getUrl() {
 		return url;

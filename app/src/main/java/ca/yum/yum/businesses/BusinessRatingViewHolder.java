@@ -21,12 +21,12 @@ import ca.yum.yum.model.BusinessWithReviews;
 
 public class BusinessRatingViewHolder extends RecyclerView.ViewHolder {
 
-	ReviewHolder reviewHolder;
-	ImageView image;
-	TextView name;
-	TextView noReview;
-	Drawable placeholder;
-	BusinessClickListener listener;
+	private ReviewHolder reviewHolder;
+	private ImageView image;
+	private TextView name;
+	private TextView noReview;
+	private Drawable placeholder;
+	private BusinessClickListener listener;
 
 	public BusinessRatingViewHolder(View itemView, BusinessClickListener listener) {
 		super(itemView);
@@ -53,6 +53,8 @@ public class BusinessRatingViewHolder extends RecyclerView.ViewHolder {
 		Glide.with(itemView.getContext())
 				.load(businessWithReviews.getBusiness().getImageUrl())
 				.placeholder(placeholder)
+				.centerCrop()
+				.skipMemoryCache(true)
 				.into(image);
 		itemView.setOnClickListener(new View.OnClickListener() {
 			@Override

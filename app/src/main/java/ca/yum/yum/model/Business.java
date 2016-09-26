@@ -11,19 +11,19 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Business {
-	String id;
-	String name;
-	float rating;
+	private String id;
+	private String name;
+	private float rating;
 	@JsonProperty("review_count")
-	int reviewCount;
-	String url;
-	String phone;
+	private int reviewCount;
+	private String url;
+	private String phone;
 	@JsonProperty("image_url")
-	String imageUrl;
-	String price;
-	List<Category> categories;
-	List<String> photos = new ArrayList<>();
-	List<BusinessHours> hours = new ArrayList<>();
+	private String imageUrl;
+	private String price;
+	private List<Category> categories;
+	private List<String> photos = new ArrayList<>();
+	private List<BusinessHours> hours = new ArrayList<>();
 
 	public String getId() {
 		return id;

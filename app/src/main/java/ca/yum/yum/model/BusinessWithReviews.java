@@ -8,8 +8,8 @@ import java.util.List;
  */
 
 public class BusinessWithReviews {
-	Business business;
-	List<Review> reviews = new ArrayList<>();
+	private Business business;
+	private List<Review> reviews = new ArrayList<>();
 
 	public Business getBusiness() {
 		return business;

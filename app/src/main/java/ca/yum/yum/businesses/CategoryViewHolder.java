@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
-	TextView category;
+	private TextView category;
 
 	public CategoryViewHolder(View itemView) {
 		super(itemView);
