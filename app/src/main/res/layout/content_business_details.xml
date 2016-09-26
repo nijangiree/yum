@@ -55,7 +55,6 @@
 			<LinearLayout
 				android:id="@+id/business_categories"
 				android:orientation="horizontal"
-				android:layout_gravity="center"
 				android:layout_marginBottom="8dp"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
